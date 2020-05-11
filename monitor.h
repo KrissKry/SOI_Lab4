@@ -35,7 +35,7 @@ class Semaphore
 
 class Condition
 {
-    friend class Monitor;   //monitor can access private of Condition
+    friend class Monitor;   //monitor can access methods of Condition
     
     private:
         Semaphore sem;
@@ -72,7 +72,7 @@ class Monitor
         Semaphore cs_2;    //critical section access to Q2
 
     public:
-        Monitor() : cs_1( 1 ), cs_2( 1 ) {}   // init critical section as availableb
+        Monitor() : cs_1( 1 ), cs_2( 1 ) {}   // init critical section as available
 
         void enter_first() { cs_1.p(); }
 

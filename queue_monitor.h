@@ -6,13 +6,13 @@
 #include <random>
 #include <iostream>
 #include <thread>
-#define R_WAIT_TIME 10      //max sleep time for reader
+#define R_WAIT_TIME 30      //max sleep time for reader
 #define P_WAIT_TIME 30      //max sleep time for producer
 #define C_WAIT_TIME 30      //max sleep time for consumer
 #define S           10      //max queue size
 #define P 5                 //producer count    
-#define C 2                 //consumer count
-#define R 2                 //reader count
+#define C 3                 //consumer count
+#define R 3                 //reader count
 
 
 /* Class designed for generating random values for all objects using it */
@@ -36,7 +36,8 @@ struct message
     int msg_id;
 };
 
-
+/* Monitor class handling producer - consumer problem derived from basic monitor                */
+/* Implements queues, necessary conditions, as well as mutex for output stream (std::cout)      */
 class Monitor_Q : Monitor
 {
     private:
@@ -54,7 +55,11 @@ class Monitor_Q : Monitor
         Monitor_Q() {};
         ~Monitor_Q() {};
 
-        /* Invoker is needed as cos tam */
+        /* Invoker is needed as pthread_create is a C function          */
+        /* it's 3rd arg is a void* function returning void*             */
+        /* pthread_create works on global functions and static          */
+        /* Since we are in a class, a static is needed to return        */
+        /* to proper function that works on non-static variables        */
         static void* producerInvoker(void* context);
         void* produce();
         
